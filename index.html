@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Et-Tech SoftApps Limited</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/week-html/images/favicon.png">
+</head>
+
+<body class="dark-mode">
+
+<header>
+ <!---NAVIGATION BAR SECTION--->
+    <nav class="navbar">
+      <div class="logo">
+    <a href="#home">
+        <img src="/week-html/images/logo.png" alt="Et-Tech SoftApps Logo">
+    </a>
+</div>
+       
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+         <button id="themeToggle" class="theme-btn">
+    ☀️
+</button>
+ <!---BURGER MENU SECTION--->
+        <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+</header>
+            <!---HERO SECTION--->
+<section class="hero reveal" id="home">
+
+    <!-- SLIDER IMAGES -->
+    <div class="slide active-slide">
+        <img src="https://picsum.photos/1200/600?random=21" alt="">
+    </div>
+
+    <div class="slide">
+        <img src="https://picsum.photos/1200/600?random=22" alt="">
+    </div>
+
+    <div class="slide">
+        <img src="https://picsum.photos/1200/600?random=23" alt="">
+    </div>
+
+    <!-- HERO CONTENT -->
+    <div class="hero-content">
+        <h1>Building Innovative Software Solutions</h1>
+
+        <p>
+            We develop scalable web and mobile applications.
+        </p>
+
+        <button class="hero-btn">
+            Get Started
+        </button>
+    </div>
+
+    <!-- SLIDER BUTTONS -->
+    <button id="prevSlide" class="slider-btn prev">
+        ❮
+    </button>
+
+    <button id="nextSlide" class="slider-btn next">
+        ❯
+    </button>
+
+</section>
+ <!---ABOUT US SECTION--->
+<section class="about reveal" id="about">
+    <h2>About Us</h2>
+
+    <p>
+        Et-Tech SoftApps Limited is a modern software development company focused on building
+        scalable, secure, and user-friendly digital solutions for businesses and individuals.
+    </p>
+
+    <p>
+        We specialize in web development, mobile applications, enterprise systems, and cloud-based platforms
+        designed to improve productivity and drive digital transformation.
+    </p>
+
+    <p>
+        Our team is passionate about clean code, modern UI/UX design, and delivering high-quality
+        software solutions that meet real-world business needs.
+    </p>
+
+    <div class="about-grid">
+        <div class="about-card">
+            <h3>🚀 Our Mission</h3>
+            <p>To build reliable and innovative software that solves real problems.</p>
+        </div>
+
+        <div class="about-card">
+            <h3>🎯 Our Vision</h3>
+            <p>To become a leading tech company delivering world-class digital products.</p>
+        </div>
+
+        <div class="about-card">
+            <h3>💡 Our Values</h3>
+            <p>Innovation, quality, teamwork, and continuous improvement.</p>
+        </div>
+    </div>
+</section>        <!---SERVICES SECTION--->
+<section class="services reveal" id="services">
+    <h2>Our Services</h2>
+
+                <!---SERVICE-CARDS SECTION--->
+    <div class="service-cards" id="servicesContainer"></div>
+</section>
+
+ <!-- TESTIMONIAL SECTION -->
+<section class="testimonials reveal" id="testimonials">
+    <h2>What Clients Say</h2>
+
+    <div class="testimonial-wrapper">
+
+        <div class="testimonial active">
+            <p>"Et-Tech SoftApps delivered an excellent web application for our business."</p>
+            <h4>- Stephen Afije</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Very professional team, the mobile app works perfectly."</p>
+            <h4>- Nsikan Edet</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Great communication and fast delivery. Highly recommended!"</p>
+            <h4>- David Smith</h4>
+        </div>
+
+    </div>
+</section>
+
+    <!---CONTACT SECTION--->
+<section class="contact reveal" id="contact">
+    <div class="container">
+        <h2>Contact Us</h2>
+
+            <!-------FORM SUBMISSION SECTIONS-------->
+        <form id="contactForm">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name">
+                <small class="error" id="nameError"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                <small class="error" id="emailError"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" rows="5" placeholder="Type your message"></textarea>
+                <small class="error" id="messageError"></small>
+            </div>
+
+            <button type="submit" class="submit-btn" disabled>Send Message</button>
+
+            <p id="formSuccess" class="success"></p>
+
+        </form>
+    </div>
+</section>
+         <!---FOOTER SECTION--->
+<footer>
+    <p>© 2026 Et-Tech SoftApps Limited. All rights reserved.</p>
+</footer>
+        <!---MODAL SECTION--->
+<div id="serviceModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal">&times;</span>
+
+        <h2 id="modalTitle"></h2>
+        <img id="modalImage" src="" alt="" style="width:100%; max-height:220px; object-fit:cover; border-radius:8px; margin:15px 0;">
+        <p id="modalDescription" style="font-weight:600; margin-bottom:10px;"></p>
+        <p id="modalDetails" style="margin-bottom:20px; color:hsl(var(--text-secondary));"></p>
+
+        <!-- Dynamic Appointment Booking Form -->
+        <div class="booking-section">
+            <h3>📅 Book this Service</h3>
+            <form id="bookingForm">
+                <!-- Service Info / Base Price -->
+                <div class="booking-price-badge">
+                    <span>Base Investment:</span>
+                    <strong id="bookingBasePrice">₦0.00</strong>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="bookingName">Your Full Name</label>
+                        <input type="text" id="bookingName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingEmail">Your Email</label>
+                        <input type="email" id="bookingEmail" required placeholder="name@example.com">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="bookingDate">Preferred Date</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingSlot">Preferred Time Slot</label>
+                        <select id="bookingSlot" required>
+                            <option value="" disabled selected>Select a time slot</option>
+                            <option value="09:00 - 11:00">Morning (09:00 AM - 11:00 AM)</option>
+                            <option value="11:00 - 13:00">Midday (11:00 AM - 01:00 PM)</option>
+                            <option value="14:00 - 16:00">Afternoon (02:00 PM - 04:00 PM)</option>
+                            <option value="16:00 - 18:00">Evening (04:00 PM - 06:00 PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bookingNotes">Project Notes & Requirements</label>
+                    <textarea id="bookingNotes" rows="3" placeholder="Briefly describe your project requirements or specific details..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn booking-btn" id="confirmBookingBtn">
+                    <span>Confirm & Pay with Paystack</span>
+                    <span class="arrow">&rarr;</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+ <!---link to script file--->
+<script src="js/services.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
