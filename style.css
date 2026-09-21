@@ -663,10 +663,12 @@ textarea.success {
     border: 1px solid hsl(var(--border-color));
 }
 
-#closeModal {
+#closeModal,
+.close-btn {
     float: right;
     font-size: 24px;
     cursor: pointer;
+    line-height: 1;
 }
 /* ==SLIDE DOWN ANIMATION FOR MODAL== */
 @keyframes slideDown {
@@ -1048,13 +1050,23 @@ textarea.success {
 }
 
 .status-badge.pending {
-    background-color: hsla(var(--primary), 0.1);
-    color: hsl(var(--primary));
+    background-color: hsla(45, 100%, 50%, 0.15);
+    color: #eab308;
 }
 
 .status-badge.paid {
-    background-color: hsla(var(--accent), 0.1);
-    color: hsl(var(--accent));
+    background-color: hsla(145, 65%, 45%, 0.15);
+    color: #10b981;
+}
+
+.status-badge.completed {
+    background-color: hsla(var(--primary), 0.15);
+    color: hsl(var(--primary));
+}
+
+.status-badge.canceled {
+    background-color: hsla(0, 75%, 55%, 0.15);
+    color: #ef4444;
 }
 
 @media (max-width: 600px) {

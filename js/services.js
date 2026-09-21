@@ -1,4 +1,14 @@
 // ==================================
+//   ---  HELPER UTILITY  -----
+// ==================================
+window.getEl = function(id) {
+    return document.getElementById(id);
+};
+function getEl(id) {
+    return document.getElementById(id);
+}
+
+// ==================================
 //   ---  SERVICES MODULE  -----
 // ==================================
 const services = [
@@ -614,8 +624,8 @@ function initBookingValidation() {
             return;
         }
 
-        // Prepare booking object (pending until payment)
-        const newBooking = {
+        // 1. Immediately record booking in database as Pending
+        const pendingBooking = {
             service: activeService ? activeService.title : "General",
             amount: activeService ? activeService.price : 0,
             name: name,
@@ -623,29 +633,26 @@ function initBookingValidation() {
             date: date,
             slot: slot,
             notes: notes,
-            status: "Pending",
-            createdAt: new Date().toISOString()
+            status: "Pending"
         };
+
+        const saveRes = await saveBooking(pendingBooking);
+        const bookingId = saveRes && saveRes.id ? saveRes.id : null;
+
         // Open Paystack payment modal
         openPaystack({ name, email, amount: amount * 100 },
             // onSuccess
             async (response) => {
-                const newBooking = {
-                    name,
-                    email,
-                    service: serviceName,
-                    amount: amount,
-                    date,
-                    slot,
-                    notes,
-                    status: "Paid",
-                    paystackRef: response ? response.reference : "SIMULATED"
-                };
-
-                await saveBooking(newBooking);
+                if (bookingId) {
+                    await fetch('api/update_status.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: bookingId, status: 'Paid' })
+                    });
+                }
 
                 const ref = response ? response.reference : "SIMULATED";
-                showToast(`Payment successful! Your booking is confirmed. Ref: ${ref}`, "success");
+                showToast(`Payment successful! Your booking is confirmed as Paid. Ref: ${ref}`, "success");
                 bookingForm.reset();
                 submitBtn.innerHTML = originalText;
                 submitBtn.style.opacity = "1";
@@ -658,33 +665,47 @@ function initBookingValidation() {
                 if (typeof renderClientBookings === "function") {
                     renderClientBookings();
                 }
+
+                // If client is not logged in, prompt them to register to view their portal
+                checkAndPromptRegistration(name, email);
             },
-            // onClose (payment cancelled)
+            // onClose (payment window closed without paying)
             async () => {
-                const newBooking = {
-                    name,
-                    email,
-                    service: serviceName,
-                    amount: amount,
-                    date,
-                    slot,
-                    notes,
-                    status: "Canceled"
-                };
-                
-                await saveBooking(newBooking);
-                showToast(`Payment cancelled. Booking marked as canceled.`, "error");
+                showToast(`Booking record saved as Pending! Register or log in to view your history in the Client Portal.`, "notice");
                 bookingForm.reset();
                 submitBtn.innerHTML = originalText;
                 submitBtn.style.opacity = "1";
                 submitBtn.disabled = false;
                 getEl("serviceModal").classList.remove("show");
+
                 if (typeof renderClientBookings === "function") {
                     renderClientBookings();
                 }
+
+                // Prompt them to register their account to track this pending booking
+                checkAndPromptRegistration(name, email);
             }
         );
     });
+}
+
+// Prompt guest to register so their pending booking links to their new portal account
+async function checkAndPromptRegistration(name, email) {
+    try {
+        const res = await fetch('api/get_client_session.php');
+        const session = await res.json();
+        if (!session.logged_in) {
+            setTimeout(() => {
+                const regName = document.getElementById('registerName');
+                const regEmail = document.getElementById('registerEmail');
+                if (regName) regName.value = name;
+                if (regEmail) regEmail.value = email;
+                openClientAuthModal();
+                toggleAuthTab('register');
+                showToast('Create your account now to access your booking history in the Client Portal!', 'success');
+            }, 1200);
+        }
+    } catch (e) {}
 }
 
 // ======================================
@@ -709,13 +730,15 @@ async function getAutomatedBookings() {
 
 async function saveBooking(bookingObj) {
     try {
-        await fetch('api/save_booking.php', {
+        const response = await fetch('api/save_booking.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bookingObj)
         });
+        return await response.json();
     } catch (error) {
         console.error("Error saving booking:", error);
+        return null;
     }
 }
 
@@ -753,75 +776,74 @@ function showToast(message, type = 'success') {
 // ======================================
 // CLIENT PORTAL RENDERING (DAY 9)
 // ======================================
-async function renderClientBookings() {
+window.renderClientBookings = async function() {
     const bookingsList = getEl("bookingsList");
     if (!bookingsList) return;
     
     bookingsList.innerHTML = `<div class="empty-state"><p>Loading bookings...</p></div>`;
 
-    const savedBookings = await getAutomatedBookings();
+    try {
+        const savedBookings = await getAutomatedBookings();
 
-    if (savedBookings.length === 0) {
+        if (!savedBookings || savedBookings.length === 0) {
+            bookingsList.innerHTML = `
+                <div class="empty-state">
+                    <p>You have no saved bookings yet. Book a service on the homepage to get started!</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Sort by date (newest first)
+        const sortedBookings = savedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        // Render each booking
+        const html = sortedBookings.map(booking => {
+            const priceFormatted = new Intl.NumberFormat('en-NG', {
+                style: 'currency',
+                currency: 'NGN'
+            }).format(booking.amount);
+
+            const statusLower = (booking.status || 'pending').toLowerCase();
+            const statusClass = statusLower === 'pending' ? 'pending' : statusLower === 'paid' ? 'paid' : statusLower === 'completed' ? 'completed' : 'canceled';
+
+            // Cancel button only if booking is not already canceled
+            const cancelBtn = booking.status !== 'Canceled' ? `<button class="cancel-btn" onclick="cancelBooking('${booking.id}')">Cancel</button>` : '';
+            
+            // Invoice button if Paid or Completed
+            const invoiceBtn = (booking.status === 'Paid' || booking.status === 'Completed') 
+                ? `<button class="btn secondary" onclick="downloadInvoice('${booking.id}')" style="margin-left: 10px; padding: 5px 10px; font-size: 0.85rem;"><i class="fas fa-file-invoice"></i> Invoice</button>` 
+                : '';
+
+            return `
+                <div class="booking-item">
+                    <div class="booking-details">
+                        <h4>${booking.service}</h4>
+                        <p>📅 ${booking.date} | ⏰ ${booking.slot}</p>
+                        <p><strong>ID:</strong> #${booking.id} | <strong>Total:</strong> ${priceFormatted}</p>
+                    </div>
+                    <div class="booking-meta">
+                        <span class="status-badge ${statusClass}">${booking.status}</span>
+                        ${cancelBtn}
+                        ${invoiceBtn}
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        bookingsList.innerHTML = html;
+    } catch (err) {
+        console.error("Error rendering client bookings:", err);
         bookingsList.innerHTML = `
             <div class="empty-state">
-                <p>You have no saved bookings yet. Book a service above to get started!</p>
+                <p>Could not load bookings right now. Please click 'Refresh'.</p>
             </div>
         `;
-        return;
     }
-
-    // Filter out canceled bookings and sort by date (newest first)
-    const activeBookings = savedBookings.filter(b => b.status !== 'Canceled');
-    
-    if (activeBookings.length === 0) {
-        bookingsList.innerHTML = `
-            <div class="empty-state">
-                <p>You have no active bookings at the moment. Book a service above to get started!</p>
-            </div>
-        `;
-        return;
-    }
-
-    const sortedBookings = activeBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-    // Updated render function to include Cancel button for non‑canceled bookings
-    const html = sortedBookings.map(booking => {
-        const priceFormatted = new Intl.NumberFormat('en-NG', {
-            style: 'currency',
-            currency: 'NGN'
-        }).format(booking.amount);
-
-        const statusClass = booking.status.toLowerCase() === 'pending' ? 'pending' : booking.status.toLowerCase() === 'paid' ? 'paid' : 'canceled';
-
-        // Cancel button only if booking is not already canceled
-        const cancelBtn = booking.status !== 'Canceled' ? `<button class="cancel-btn" onclick="cancelBooking('${booking.id}')">Cancel</button>` : '';
-        
-        // Invoice button if Paid or Completed
-        const invoiceBtn = (booking.status === 'Paid' || booking.status === 'Completed') 
-            ? `<button class="btn secondary" onclick="downloadInvoice('${booking.id}')" style="margin-left: 10px; padding: 5px 10px; font-size: 0.85rem;"><i class="fas fa-file-invoice"></i> Invoice</button>` 
-            : '';
-
-        return `
-            <div class="booking-item">
-                <div class="booking-details">
-                    <h4>${booking.service}</h4>
-                    <p>📅 ${booking.date} | ⏰ ${booking.slot}</p>
-                    <p><strong>ID:</strong> ${booking.id} | <strong>Total:</strong> ${priceFormatted}</p>
-                </div>
-                <div class="booking-meta">
-                    <span class="status-badge ${statusClass}">${booking.status}</span>
-                    ${cancelBtn}
-                    ${invoiceBtn}
-                </div>
-            </div>
-        `;
-    }).join("");
-
-    bookingsList.innerHTML = html;
-}
+};
 
 // Cancel a booking by ID
-async function cancelBooking(bookingId) {
+window.cancelBooking = async function(bookingId) {
     try {
         const response = await fetch('api/update_status.php', {
             method: 'POST',
@@ -832,7 +854,7 @@ async function cancelBooking(bookingId) {
         
         if (result.success) {
             showToast('Booking cancelled.', 'error');
-            await renderClientBookings();
+            await window.renderClientBookings();
         } else {
             showToast(result.error || 'Failed to cancel.', 'error');
         }
@@ -1034,7 +1056,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 // INVOICE GENERATION (WEEK 6)
 // ==========================================
-async function downloadInvoice(bookingId) {
+window.downloadInvoice = async function(bookingId) {
     try {
         const bookings = await getAutomatedBookings();
         const booking = bookings.find(b => String(b.id) === String(bookingId));
@@ -1084,7 +1106,23 @@ async function downloadInvoice(bookingId) {
 // WEEK 9: CLIENT AUTHENTICATION
 // ==========================================
 window.openClientAuthModal = function() {
-    document.getElementById('clientAuthModal').style.display = 'flex';
+    const modal = document.getElementById('clientAuthModal');
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+    }
+};
+
+window.closeClientAuthModal = function() {
+    const modal = document.getElementById('clientAuthModal');
+    if (modal) {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+    }
 };
 
 window.toggleAuthTab = function(tab) {
@@ -1111,6 +1149,23 @@ window.toggleAuthTab = function(tab) {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check if URL specifies auth modal
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth') || window.location.hash === '#clientAuth') {
+        openClientAuthModal();
+        if (urlParams.get('tab') === 'register') {
+            toggleAuthTab('register');
+        }
+    }
+
+    // Close auth modal when clicking background
+    window.addEventListener('click', (e) => {
+        const authModal = document.getElementById('clientAuthModal');
+        if (e.target === authModal) {
+            closeClientAuthModal();
+        }
+    });
+
     // Check if client is logged in
     try {
         const res = await fetch('api/get_client_session.php');

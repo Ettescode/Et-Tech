@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['client_logged_in']) || $_SESSION['client_logged_in'] !== true) {
-    header('Location: index.html');
+    header('Location: index.html?auth=login');
     exit;
 }
 $client_name = $_SESSION['client_name'];

@@ -277,7 +277,7 @@
 <!-- CLIENT AUTH MODAL (Week 9) -->
 <div id="clientAuthModal" class="modal" role="dialog" aria-modal="true" aria-label="Client Authentication Modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px; text-align: center;">
-        <span class="close-btn" onclick="document.getElementById('clientAuthModal').style.display='none'">&times;</span>
+        <span class="close-btn" onclick="closeClientAuthModal()">&times;</span>
         
         <div id="authTabs" style="display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--border-color);">
             <button id="tabLogin" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 2px solid var(--brand-blue); color: var(--text-primary); cursor: pointer;" onclick="toggleAuthTab('login')">Login</button>
