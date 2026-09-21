@@ -2,98 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Et-Tech SoftApps Limited</title>
+    <title>Et-Tech SoftApps Limited - Enterprise Solutions</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts: Outfit -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2057ee">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <meta name="description" content="Et-Tech SoftApps Limited provides cutting-edge enterprise software, web development, and cloud solutions. Book a consultation today.">
+    <link rel="canonical" href="https://ettescode.com/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ettescode.com/">
+    <meta property="og:title" content="Et-Tech SoftApps Limited">
+    <meta property="og:description" content="Providing cutting-edge enterprise software and web solutions.">
+    <meta property="og:image" content="https://ettescode.com/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ettescode.com/">
+    <meta property="twitter:title" content="Et-Tech SoftApps Limited">
+    <meta property="twitter:description" content="Providing cutting-edge enterprise software and web solutions.">
+    <meta property="twitter:image" content="https://ettescode.com/images/og-image.jpg">
+
+    <!-- Preloads & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="preload" href="style.min.css" as="style">
+    <link rel="stylesheet" href="style.min.css">
+    
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <!-- Font Awesome (Preloaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 </head>
 
 <body class="dark-mode">
 
 <header>
- <!---NAVIGATION BAR SECTION--->
+    <!---NAVIGATION BAR SECTION--->
     <nav class="navbar">
-      <div class="logo">
-    <a href="#home">
-        <img src="/images/logo.png" alt="Et-Tech SoftApps Logo">
-    </a>
-</div>
-       
-
+        <div class="logo">
+            <a href="#home">
+                <img src="images/logo.png" alt="Et-Tech SoftApps Logo">
+            </a>
+        </div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li id="navAuthLink"><a href="javascript:void(0)" onclick="openClientAuthModal()">Client Portal <i class="fas fa-lock"></i></a></li>
         </ul>
-         <button id="themeToggle" class="theme-btn">
-    ☀️
-</button>
- <!---BURGER MENU SECTION--->
-        <div class="burger">
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme" style="background: none; border: none; color: hsl(var(--text-primary)); font-size: 1.2rem; cursor: pointer; margin-left: 15px;">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
+        <!---BURGER MENU SECTION--->
+        <div class="burger" role="button" tabindex="0" aria-label="Open Navigation Menu">
             <div></div>
             <div></div>
             <div></div>
         </div>
     </nav>
 </header>
-            <!---HERO SECTION--->
-<section class="hero reveal" id="home">
 
+<!---HERO SECTION--->
+<section class="hero reveal" id="home">
     <!-- SLIDER IMAGES -->
     <div class="slide active-slide">
-        <img src="https://picsum.photos/1200/600?random=21" alt="">
+        <img src="https://picsum.photos/1200/600?random=21" alt="" loading="lazy">
     </div>
-
     <div class="slide">
-        <img src="https://picsum.photos/1200/600?random=22" alt="">
+        <img src="https://picsum.photos/1200/600?random=22" alt="" loading="lazy">
     </div>
-
     <div class="slide">
-        <img src="https://picsum.photos/1200/600?random=23" alt="">
+        <img src="https://picsum.photos/1200/600?random=23" alt="" loading="lazy">
     </div>
 
     <!-- HERO CONTENT -->
     <div class="hero-content">
         <h1>Building Innovative Software Solutions</h1>
-
-        <p>
-            We develop scalable web and mobile applications.
-        </p>
-
-        <button class="hero-btn">
-            Get Started
-        </button>
+        <p>We develop scalable web and mobile applications.</p>
+        <button class="hero-btn">Get Started</button>
     </div>
 
     <!-- SLIDER BUTTONS -->
-    <button id="prevSlide" class="slider-btn prev">
-        ❮
-    </button>
-
-    <button id="nextSlide" class="slider-btn next">
-        ❯
-    </button>
-
+    <button id="prevSlide" class="slider-btn prev">❮</button>
+    <button id="nextSlide" class="slider-btn next">❯</button>
 </section>
- <!---ABOUT US SECTION--->
+
+<!---ABOUT US SECTION--->
 <section class="about reveal" id="about">
     <h2>About Us</h2>
-
     <p>
         Et-Tech SoftApps Limited is a modern software development company focused on building
         scalable, secure, and user-friendly digital solutions for businesses and individuals.
     </p>
-
     <p>
         We specialize in web development, mobile applications, enterprise systems, and cloud-based platforms
         designed to improve productivity and drive digital transformation.
     </p>
-
     <p>
         Our team is passionate about clean code, modern UI/UX design, and delivering high-quality
         software solutions that meet real-world business needs.
@@ -101,91 +111,110 @@
 
     <div class="about-grid">
         <div class="about-card">
-            <h3>🚀 Our Mission</h3>
+            <h3>🎯 Our Mission</h3>
             <p>To build reliable and innovative software that solves real problems.</p>
         </div>
-
         <div class="about-card">
-            <h3>🎯 Our Vision</h3>
+            <h3>👁️ Our Vision</h3>
             <p>To become a leading tech company delivering world-class digital products.</p>
         </div>
-
         <div class="about-card">
-            <h3>💡 Our Values</h3>
+            <h3>💎 Our Values</h3>
             <p>Innovation, quality, teamwork, and continuous improvement.</p>
         </div>
     </div>
-</section>        <!---SERVICES SECTION--->
+</section>        
+
+<!---SERVICES SECTION--->
 <section class="services reveal" id="services">
     <h2>Our Services</h2>
-
-                <!---SERVICE-CARDS SECTION--->
+    <!---SERVICE-CARDS SECTION--->
     <div class="service-cards" id="servicesContainer"></div>
 </section>
 
- <!-- TESTIMONIAL SECTION -->
+<!-- ===================================== -->
+<!-- CLIENT PORTAL SECTION (DAY 8) -->
+<!-- ============================<!-- Public Review Submission -->
+<section class="client-portal reveal" id="clientPortal" style="padding-top: 50px;">
+    <div class="portal-container">
+        <div class="review-section glass-panel" style="padding: 20px; border-radius: 12px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align:center;">Leave a Review</h3>
+            <p style="text-align:center; font-size: 14px; margin-bottom: 15px; color: hsl(var(--text-secondary));">Had a great experience? Let us know!</p>
+            <form id="reviewForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="reviewerName">Your Name</label>
+                        <input type="text" id="reviewerName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewerRole">Company / Role</label>
+                        <input type="text" id="reviewerRole" placeholder="CEO, TechCorp">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reviewMessage">Your Review</label>
+                    <textarea id="reviewMessage" rows="3" required placeholder="Tell us about your experience..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" style="padding: 10px 20px; font-size: 14px; width: 100%;">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</section></div>
+</section>
+
+<!-- TESTIMONIAL SECTION -->
 <section class="testimonials reveal" id="testimonials">
     <h2>What Clients Say</h2>
-
-    <div class="testimonial-wrapper">
-
+    <div class="testimonial-wrapper" id="testimonialWrapper">
         <div class="testimonial active">
             <p>"Et-Tech SoftApps delivered an excellent web application for our business."</p>
             <h4>- Stephen Afije</h4>
         </div>
-
         <div class="testimonial">
             <p>"Very professional team, the mobile app works perfectly."</p>
             <h4>- Nsikan Edet</h4>
         </div>
-
         <div class="testimonial">
             <p>"Great communication and fast delivery. Highly recommended!"</p>
             <h4>- David Smith</h4>
         </div>
-
     </div>
 </section>
 
-    <!---CONTACT SECTION--->
+<!---CONTACT SECTION--->
 <section class="contact reveal" id="contact">
     <div class="container">
         <h2>Contact Us</h2>
-
-            <!-------FORM SUBMISSION SECTIONS-------->
+        <!-------FORM SUBMISSION SECTIONS-------->
         <form id="contactForm">
-
             <div class="form-group">
                 <label for="name">Full Name</label>
                 <input type="text" id="name" placeholder="Enter your full name">
                 <small class="error" id="nameError"></small>
             </div>
-
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" placeholder="Enter your email">
                 <small class="error" id="emailError"></small>
             </div>
-
             <div class="form-group">
                 <label for="message">Message</label>
                 <textarea id="message" rows="5" placeholder="Type your message"></textarea>
                 <small class="error" id="messageError"></small>
             </div>
-
             <button type="submit" class="submit-btn" disabled>Send Message</button>
-
             <p id="formSuccess" class="success"></p>
-
         </form>
     </div>
 </section>
-         <!---FOOTER SECTION--->
+
+<!---FOOTER SECTION--->
 <footer>
     <p>© 2026 Et-Tech SoftApps Limited. All rights reserved.</p>
 </footer>
-        <!---MODAL SECTION--->
-<div id="serviceModal" class="modal">
+
+<!---MODAL SECTION--->
+<div id="serviceModal" class="modal" role="dialog" aria-modal="true" aria-label="Service Details Modal">
     <div class="modal-content">
         <span id="closeModal">&times;</span>
 
@@ -245,10 +274,93 @@
         </div>
     </div>
 </div>
- <!---link to script file--->
-<script src="js/services.js"></script>
-<script src="js/posts.js"></script>
-<script src="js/main.js"></script>
+<!-- CLIENT AUTH MODAL (Week 9) -->
+<div id="clientAuthModal" class="modal" role="dialog" aria-modal="true" aria-label="Client Authentication Modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <span class="close-btn" onclick="document.getElementById('clientAuthModal').style.display='none'">&times;</span>
+        
+        <div id="authTabs" style="display: flex; margin-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+            <button id="tabLogin" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 2px solid var(--brand-blue); color: var(--text-primary); cursor: pointer;" onclick="toggleAuthTab('login')">Login</button>
+            <button id="tabRegister" style="flex: 1; padding: 10px; background: none; border: none; color: var(--text-secondary); cursor: pointer;" onclick="toggleAuthTab('register')">Register</button>
+        </div>
 
+        <!-- Login Form -->
+        <form id="clientLoginForm">
+            <h3 style="margin-bottom: 15px;">Welcome Back</h3>
+            <input type="email" id="loginEmail" placeholder="Email Address" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px;">
+            <input type="password" id="loginPassword" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px;">
+            <button type="submit" class="btn primary" style="width: 100%;">Login</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="clientRegisterForm" style="display: none;">
+            <h3 style="margin-bottom: 15px;">Create an Account</h3>
+            <input type="text" id="registerName" placeholder="Full Name" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px;">
+            <input type="email" id="registerEmail" placeholder="Email Address" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px;">
+            <input type="password" id="registerPassword" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px;">
+            <button type="submit" class="btn primary" style="width: 100%;">Register</button>
+        </form>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION CONTAINER (DAY 7) -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- INVOICE TEMPLATE (Hidden) -->
+<div id="invoiceTemplate" style="display: none; background: white; color: black; padding: 40px; font-family: 'Outfit', sans-serif; width: 800px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px;">
+        <div>
+            <h1 style="color: #1a56db; margin: 0;">ET-TECH SOFTAPPS</h1>
+            <p style="margin: 5px 0 0; color: #666;">Software Development Agency</p>
+        </div>
+        <div style="text-align: right;">
+            <h2 style="margin: 0; color: #333;">INVOICE</h2>
+            <p style="margin: 5px 0 0; font-weight: bold;" id="invNumber">#INV-000</p>
+        </div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
+        <div>
+            <h4 style="color: #666; margin-bottom: 10px;">Billed To:</h4>
+            <p style="margin: 0; font-weight: bold; font-size: 1.1rem;" id="invName">Client Name</p>
+            <p style="margin: 5px 0 0; color: #555;" id="invEmail">client@example.com</p>
+        </div>
+        <div style="text-align: right;">
+            <p style="margin: 0;"><strong>Date:</strong> <span id="invDate">2026-07-20</span></p>
+            <p style="margin: 5px 0 0;"><strong>Status:</strong> <span style="color: #059669; font-weight: bold;">PAID</span></p>
+        </div>
+    </div>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px;">
+        <thead>
+            <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                <th style="padding: 12px; text-align: left; color: #475569;">Description</th>
+                <th style="padding: 12px; text-align: right; color: #475569;">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 15px 12px;" id="invService">Web Development Service</td>
+                <td style="padding: 15px 12px; text-align: right; font-weight: bold;" id="invAmount">₦0.00</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="text-align: right; margin-top: 50px;">
+        <h3 style="margin: 0; color: #333;">Total Paid: <span style="color: #1a56db;" id="invTotal">₦0.00</span></h3>
+        <p style="margin-top: 10px; color: #666; font-style: italic;">Thank you for your business!</p>
+    </div>
+</div>
+
+<!---link to script file--->
+<!-- html2pdf SDK -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+<!-- Paystack Inline SDK (sandbox) -->
+<script src="https://js.paystack.co/v1/inline.js" defer></script>
+<script src="js/payment.js?v=2" defer></script>
+<script src="js/theme.js?v=2" defer></script>
+<script src="js/services.js?v=2" defer></script>
+<script src="js/posts.js?v=2" defer></script>
+<script src="js/main.js?v=2" defer></script>
 </body>
 </html>

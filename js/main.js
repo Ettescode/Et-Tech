@@ -61,6 +61,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // MODAL
     initModalClose();
     initThemeToggle();
+    
+    // BOOKING FORM
+    if (typeof initBookingValidation === "function") {
+        initBookingValidation();
+    }
+    
+    // CLIENT PORTAL (DAY 9)
+    if (typeof renderClientBookings === "function") {
+        renderClientBookings();
+    }
 });
 // ==============================
 // HELPER FUNCTION (SELECT ELEMENT)
